@@ -1,0 +1,289 @@
+<form [formGroup]="form" (ngSubmit)="onSaveRecipe()">
+  <mat-card>
+    <mat-label>Recipe Info</mat-label><br />
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        name="name"
+        placeholder="name"
+        type="text"
+        formControlName="name"
+        required
+      />
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        name="description"
+        placeholder="Description"
+        type="text"
+        formControlName="description"
+      ></textarea>
+    </mat-form-field>
+
+    <br />
+    <mat-form-field>
+      <mat-select
+        required
+        placeholder="Difficulty to cook"
+        name="difficulty"
+        formControlName="difficulty"
+      >
+        <mat-option *ngFor="let rating of ratings" [value]="rating">{{
+          rating
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        required
+        placeholder="Time to cook"
+        name="timeToCook"
+        formControlName="timeToCook"
+      >
+        <mat-option *ngFor="let rating of ratings" [value]="rating">{{
+          rating
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        required
+        placeholder="Rating"
+        name="rating"
+        formControlName="rating"
+      >
+        <mat-option *ngFor="let rating of ratings" [value]="rating">{{
+          rating
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-select
+        placeholder="Category"
+        name="category"
+        formControlName="category"
+      >
+        <mat-option *ngFor="let category of categories" [value]="category">{{
+          category
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+
+  <!-- START STEPS -->
+  <form #addStep="ngForm" (ngSubmit)="onAddStep(addStep)" class="addStepForm">
+    <mat-card>
+      <mat-label>Add Steps</mat-label><br />
+      <mat-form-field>
+        <mat-label>Step</mat-label>
+        <input matInput name="step" ngModel placeholder="Step Description" />
+      </mat-form-field>
+
+      <button mat-button color="accent">
+        <mat-icon>save</mat-icon>
+      </button>
+
+      <br />
+
+      <!-- Table for steps.  -->
+      <table
+        *ngIf="dataSourceSteps.data.length > 0"
+        mat-table
+        [dataSource]="dataSourceSteps"
+        class="steps"
+        #stepsTable
+        class="stepsTable"
+      >
+        <ng-container
+          [matColumnDef]="col"
+          *ngFor="let col of displayedColumnsSteps"
+        >
+          <th mat-header-cell *matHeaderCellDef="">
+            <span *ngIf="col !== 'edit'">
+              {{ col }}
+            </span>
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+            <div [ngSwitch]="dataSchemaSteps[col]" *ngIf="!element.edit">
+              <div class="ntb-edit" *ngSwitchCase="'edit'">
+                <button
+                  mat-button
+                  (click)="element.edit = !element.edit"
+                  color="accent"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+
+                <button mat-button color="warn" (click)="onDeleteStep(element)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <span *ngSwitchDefault> {{ element[col] }} </span>
+            </div>
+
+            <div *ngIf="element.edit">
+              <div class="btn.edit" *ngIf="col === 'edit'; else dataField">
+                <button
+                  mat-button
+                  (click)="element.edit = !element.edit"
+                  color="primary"
+                >
+                  <mat-icon>done</mat-icon>
+                </button>
+              </div>
+
+              <ng-template #dataField>
+                <mat-form-field>
+                  <mat-label>{{ col }}</mat-label>
+                  <input
+                    [type]="dataSchemaSteps[col]"
+                    matInput
+                    [(ngModel)]="element[col]"
+                    [name]="dataSchemaSteps[col]"
+                  />
+                </mat-form-field>
+              </ng-template>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          ng-repeat
+          *matHeaderRowDef="displayedColumnsSteps"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsSteps"></tr>
+      </table>
+    </mat-card>
+  </form>
+  <!-- END STEPS -->
+
+  <!-- START INGREDIENTS -->
+  <form
+    #addIngredient="ngForm"
+    (ngSubmit)="onAddIngredient(addIngredient)"
+    class="addIngredientForm"
+  >
+    <mat-card>
+      <mat-label>Add Ingredients</mat-label><br />
+      <mat-form-field>
+        <mat-label>Ingredient</mat-label>
+        <input matInput name="ingredient" ngModel placeholder="ingredient" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input
+          matInput
+          name="amount"
+          type="number"
+          placeholder="amount"
+          ngModel
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Unit" name="unit" ngModel>
+          <mat-option *ngFor="let unit of Units" [value]="unit">{{
+            unit
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button color="accent">
+        <mat-icon>save</mat-icon>
+      </button>
+
+      <br />
+
+      <!-- Table for ingredients.  -->
+      <table
+        *ngIf="dataSourceIngredients.data.length > 0"
+        mat-table
+        [dataSource]="dataSourceIngredients"
+        class="ingredients"
+        #ingredientTable
+      >
+        <ng-container
+          [matColumnDef]="col"
+          *ngFor="let col of displayedColumnsIngredients"
+        >
+          <th mat-header-cell *matHeaderCellDef="">
+            <span *ngIf="col !== 'isEdit'">
+              {{ col }}
+            </span>
+          </th>
+
+          <td mat-cell *matCellDef="let element">
+            <div
+              [ngSwitch]="dataSchemaIngredients[col]"
+              *ngIf="!element.isEdit"
+            >
+              <div class="ntb-edit" *ngSwitchCase="'isEdit'">
+                <button
+                  mat-button
+                  (click)="element.isEdit = !element.isEdit"
+                  color="accent"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-button
+                  color="warn"
+                  (click)="onDeleteIngred(element)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <span *ngSwitchDefault>
+                {{ element[col] }}
+              </span>
+            </div>
+
+            <div *ngIf="element.isEdit">
+              <div class="btn.edit" *ngIf="col === 'isEdit'; else dataField">
+                <button
+                  mat-button
+                  (click)="element.isEdit = !element.isEdit"
+                  color="primary"
+                >
+                  <mat-icon>done</mat-icon>
+                </button>
+              </div>
+
+              <ng-template #dataField>
+                <mat-form-field>
+                  <mat-label>{{ col }}</mat-label>
+                  <input
+                    [type]="dataSchemaIngredients[col]"
+                    matInput
+                    [(ngModel)]="element[col]"
+                    [name]="dataSchemaIngredients[col]"
+                  />
+                </mat-form-field>
+              </ng-template>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          ng-repeat
+          *matHeaderRowDef="displayedColumnsIngredients"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumnsIngredients"
+        ></tr>
+      </table>
+    </mat-card>
+  </form>
+  <!-- END INGREDIENTS -->
+  <button class="onSaveButton" mat-raised-button color="primary">Save</button>
+</form>

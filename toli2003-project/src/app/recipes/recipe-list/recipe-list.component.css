@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+mat-spinner {
+  margin: auto;
+}
+.loading {
+  margin: auto;
+  text-align: center;
+}
+
+mat-accordion {
+  width: 80%;
+}
+
+.recipe-list .mat-expansion-panel-header-description {
+  flex-basis: 0;
+  justify-content: right;
+  align-items: center;
+}
+
+.recipe-overview {
+  display: flex;
+}
+
+.ingredients {
+  margin-right: 5rem;
+}
+.buttons {
+  margin-left: 90%;
+}

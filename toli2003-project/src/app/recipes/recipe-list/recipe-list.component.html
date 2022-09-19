@@ -1,0 +1,60 @@
+<div *ngIf="isLoading" class="loading">
+  <mat-spinner></mat-spinner>
+  <p>Recipes are loading....</p>
+</div>
+<mat-accordion class="recipe-list" *ngIf="!isLoading">
+  <mat-expansion-panel *ngFor="let recipe of Recipes">
+    <mat-expansion-panel-header>
+      <mat-panel-title>{{ recipe.name }}</mat-panel-title>
+      <mat-panel-description>{{
+        recipe.description
+      }}</mat-panel-description></mat-expansion-panel-header
+    >
+    <div>
+      <i
+        >Difficulty {{ recipe.difficulty }}. Time to cook
+        {{ recipe.timeToCook }}. Rating {{ recipe.rating }}</i
+      >
+    </div>
+    <br />
+    <br />
+
+    <div class="recipe-overview">
+      <ul class="ingredients">
+        <b>ingredients</b>
+        <li *ngFor="let ingredient of recipe.ingredients">
+          {{ ingredient.amount }}
+          {{ ingredient.unit }} {{ ingredient.ingredient }}
+        </li>
+      </ul>
+
+      <div>
+        <ul class="ingredients">
+          <b>Steps</b>
+          <li *ngFor="let step of recipe.steps">
+            {{ step.description }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a
+        *ngIf="isUserAuthenticated"
+        mat-button
+        [routerLink]="['/edit', recipe._id]"
+        color="accent"
+      >
+        <mat-icon>edit</mat-icon>
+      </a>
+      <button
+        *ngIf="isUserAuthenticated"
+        mat-button
+        (click)="onDelete(recipe._id)"
+        color="warn"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

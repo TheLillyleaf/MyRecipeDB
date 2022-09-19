@@ -1,0 +1,17 @@
+.ingredients,
+.stepsTable {
+  width: 80%;
+  margin-top: 1rem;
+}
+
+mat-form-field {
+  padding: 5px;
+}
+
+.onSaveButton {
+  margin-top: 1rem;
+}
+.addIngredientForm,
+.addStepForm {
+  margin-top: 1rem;
+}

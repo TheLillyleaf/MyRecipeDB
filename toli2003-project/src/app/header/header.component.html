@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span><a routerLink="">My Recipes</a></span>
+
+  <div class="spacer"></div>
+  <a
+    *ngIf="isAuthenticated"
+    mat-button
+    routerLink="/createRecipe"
+    routerLinkActive="mat-accent"
+    >Add Recipe</a
+  >
+  <a
+    *ngIf="!isAuthenticated"
+    mat-button
+    routerLink="login"
+    routerLinkActive="mat-accent"
+    >Login</a
+  >
+  <!-- <a
+    *ngIf="!isAuthenticated"
+    mat-button
+    routerLink="signup"
+    routerLinkActive="mat-accent"
+    >Signup</a
+  > -->
+  <button *ngIf="isAuthenticated" mat-button (click)="onLogout()">
+    Logout
+  </button>
+</mat-toolbar>
