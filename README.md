@@ -8,7 +8,8 @@ A simple MEAN stack recipe database with some authentication feature.
 
 ### Backend
 
-Run from localhost:3000 as default, change serverUrl to hosting url
+Runs from localhost:3000 as default.
+Need to be in ./backend
 
 nodemon server.js
 
