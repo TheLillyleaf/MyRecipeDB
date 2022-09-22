@@ -3,6 +3,7 @@
 ## Tobias Liljeblad Recipe database
 
 A simple MEAN stack recipe database with some authentication feature.
+Use Auth details (below) to log in and add your favourite recipe!
 
 ## Start
 
